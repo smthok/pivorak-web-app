@@ -1,3 +1,4 @@
+require 'capistrano-db-tasks'
 require 'dotenv/load'
 # config valid only for current version of Capistrano
 lock "3.7.2"
