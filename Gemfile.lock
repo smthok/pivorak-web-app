@@ -86,6 +86,7 @@ GEM
     capistrano-sidekiq (0.10.0)
       capistrano
       sidekiq (>= 3.4)
+    capistrano3-postgres (0.1.2)
     capybara (2.12.1)
       addressable
       mime-types (>= 1.16)
@@ -469,6 +470,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.2)
   capistrano-rvm
   capistrano-sidekiq
+  capistrano3-postgres
   capybara
   carrierwave (~> 1.0)
   chartkick

@@ -65,6 +65,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'meta_request'
   gem 'capistrano', '~> 3.6'
+  gem 'capistrano3-postgres', require: false
   gem 'capistrano-rails', '~> 1.2'
   gem 'capistrano-sidekiq'
   gem 'capistrano-rvm'
