@@ -1,15 +1,16 @@
-- title t('members.edit_profile')
+.pk-profile-edit
+  - title t('members.edit_profile')
 
-= simple_form_for [current_user], url: profile_path do |f|
-    .form-inputs
-      = f.input :first_name
-      = f.input :last_name
-      = f.input :email, required: true
-      = f.input :password
-      = f.input :password_confirmation
-      = gravatar_image(current_user)
-      = gravatar_website_link
+  h2
+    | Edit Profile
+
+  = simple_form_for [current_user], url: profile_path, html: { class: 'pk-form' } do |f|
+    = f.input :cover
+    = f.input :first_name, placeholder: 'First Name'
+    = f.input :last_name, placeholder: 'Last Name'
+    = f.input :email, required: true, placeholder: 'E-mail'
+    = f.input :password, placeholder: 'Password'
+    = f.input :password_confirmation, value: f.object.password, placeholder: 'Password confirmation'
 
     .form-actions
-      = f.button :submit, t('words.update'), class: 'btn btn-success'
-      = link_to t('words.back'), profile_path
+      = f.button :submit, t('words.update')

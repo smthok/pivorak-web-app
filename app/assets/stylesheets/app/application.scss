@@ -35,6 +35,8 @@
 @import "pages/home/status";
 @import "pages/static/base";
 
+@import "pages/profile/edit";
+
 @import "pages/authentication/authentication";
 
 @import "shared/list";
@@ -45,5 +47,6 @@
 @import "shared/flash";
 @import "shared/avatar";
 @import "shared/input";
+@import "shared/form";
 
 @import "external/lory";

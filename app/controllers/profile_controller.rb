@@ -5,10 +5,9 @@ class ProfileController < ApplicationController
 
   def update
     if User::Update.call current_user, params[:user]
-      flash[:notice] = t('notifications.success')
+      add_flash(:success)
       redirect_to root_path
     else
-      flash[:error] = t('notifications.failure')
       render :edit
     end
   end

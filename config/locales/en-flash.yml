@@ -11,3 +11,7 @@ en:
       show:
         confirmed: See you on Friday!
         refused: Pity.. Hope to see you next time!
+    profile:
+      update:
+        success: Profile is updated
+
