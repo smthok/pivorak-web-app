@@ -4,14 +4,6 @@ $namespace: ".pk-form";
   @extend #{$namespace}--btn-medium;
 }
 
-#{$namespace} input[type="submit"] {
-  @extend #{$namespace}--btn-medium;
-}
-
-#{$namespace} input[type="file"] {
-
-}
-
 #{$namespace} a {
   @extend #{$namespace}--link-small;
   &:hover, &:active {
