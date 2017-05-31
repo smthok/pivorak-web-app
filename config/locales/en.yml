@@ -214,6 +214,9 @@ en:
     singular: Page
     plural: Pages
 
+  topics:
+    plural: Topics
+
   charts:
     by_status: '%{resource} by status'
     per_month: '%{resource} per month'

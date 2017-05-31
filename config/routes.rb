@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     resources :visit_requests, only: %i[show create destroy]
   end
 
+  resources  :topics
   resources :speakers,  only: %i[index]
   resources :search,    only: %i[index]
   resources :venues,    only: %i[show]

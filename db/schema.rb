@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170520084316) do
+ActiveRecord::Schema.define(version: 20170531145839) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -170,6 +170,19 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.index ["speaker_id"], name: "index_talks_on_speaker_id", using: :btree
   end
 
+  create_table "topics", force: :cascade do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.text     "description"
+    t.integer  "status"
+    t.boolean  "published",   default: false
+    t.integer  "creator_id"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+    t.index ["creator_id"], name: "index_topics_on_creator_id", using: :btree
+    t.index ["slug"], name: "index_topics_on_slug", using: :btree
+  end
+
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",    null: false
     t.string   "encrypted_password",     default: "",    null: false
@@ -220,6 +233,27 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.boolean  "waiting_list", default: false
     t.boolean  "visited",      default: false
     t.uuid     "token",        default: -> { "uuid_generate_v4()" }
+  end
+
+  create_table "vote_items", force: :cascade do |t|
+    t.string   "title"
+    t.integer  "value",       default: 0
+    t.string   "source_type"
+    t.integer  "source_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["source_type", "source_id"], name: "index_vote_items_on_source_type_and_source_id", using: :btree
+  end
+
+  create_table "votes", force: :cascade do |t|
+    t.integer  "value",       default: 1
+    t.integer  "voter_id"
+    t.string   "target_type"
+    t.integer  "target_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.index ["target_type", "target_id"], name: "index_votes_on_target_type_and_target_id", using: :btree
+    t.index ["voter_id"], name: "index_votes_on_voter_id", using: :btree
   end
 
 end

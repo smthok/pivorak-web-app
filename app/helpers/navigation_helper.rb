@@ -46,4 +46,8 @@ module NavigationHelper
   def admin_link
     link_to t('admin.admin'), admin_path
   end
+
+  def topics_link
+    link_to t('topics.plural'), topics_path
+  end
 end
