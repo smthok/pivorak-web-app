@@ -3,7 +3,7 @@ class CreateExpenses < ActiveRecord::Migration[5.0]
     create_table :expenses do |t|
       t.decimal :amount
       t.integer :event_id, null: false
-      t.text :attachments, array: true, default: []
+      t.string :attachment
 
       t.timestamps
     end

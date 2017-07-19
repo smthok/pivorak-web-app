@@ -7,7 +7,7 @@ module Admin
     end
 
     def create
-
+      Expense::Create.call(expense, params)
     end
 
     private
