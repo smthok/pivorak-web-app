@@ -10,11 +10,82 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170520084316) do
+ActiveRecord::Schema.define(version: 20170719164057) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "authors", force: :cascade do |t|
+    t.integer  "talent_id"
+    t.string   "full_name"
+    t.string   "role_in_company"
+    t.string   "gplus_profile"
+    t.string   "company_name"
+    t.string   "company_url"
+    t.string   "url"
+    t.string   "email"
+    t.string   "photo"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "core_team_job_pages", force: :cascade do |t|
+    t.string   "status",      default: "draft"
+    t.string   "slug"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "platform_id"
+    t.index "((content ->> 'category'::text))", name: "core_team_job_pages_category_index", using: :btree
+    t.index "((content ->> 'title'::text))", name: "core_team_job_pages_title_index", using: :btree
+  end
+
+  create_table "core_team_members", force: :cascade do |t|
+    t.string   "status",     default: "active"
+    t.jsonb    "content"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "data_imports", force: :cascade do |t|
+    t.string   "model"
+    t.datetime "imported_at"
+  end
+
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  end
+
+  create_table "disqus_comments", force: :cascade do |t|
+    t.string   "comment_id",        limit: 255
+    t.string   "thread_id",         limit: 255
+    t.string   "thread_link",       limit: 255
+    t.string   "forum_id",          limit: 255
+    t.string   "parent_comment_id", limit: 255
+    t.text     "body"
+    t.string   "author_name",       limit: 255
+    t.string   "author_url",        limit: 255
+    t.string   "author_email",      limit: 255
+    t.datetime "posted_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "commentable_id"
+    t.string   "commentable_type",  limit: 255
+    t.index ["commentable_id", "commentable_type"], name: "index_disqus_comments_on_commentable_id_and_commentable_type", using: :btree
+  end
 
   create_table "donations", force: :cascade do |t|
     t.integer  "user_id"
@@ -31,6 +102,7 @@ ActiveRecord::Schema.define(version: 20170520084316) do
   create_table "email_templates", force: :cascade do |t|
     t.string   "title"
     t.string   "subject"
+    t.string   "from"
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -63,6 +135,14 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.index ["slug"], name: "index_events_on_slug", using: :btree
   end
 
+  create_table "expenses", force: :cascade do |t|
+    t.decimal  "amount"
+    t.integer  "event_id"
+    t.text     "attachments", default: [],              array: true
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
   create_table "friendly_id_slugs", force: :cascade do |t|
     t.string   "slug",                      null: false
     t.integer  "sluggable_id",              null: false
@@ -83,6 +163,16 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "generic_pages", force: :cascade do |t|
+    t.string   "status",          default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "target_vertical"
+    t.string   "type"
   end
 
   create_table "goals", force: :cascade do |t|
@@ -109,12 +199,63 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.index ["user_id"], name: "index_identities_on_user_id", using: :btree
   end
 
+  create_table "insights_author_pages", force: :cascade do |t|
+    t.integer  "insights_author_id"
+    t.string   "slug"
+    t.string   "status",             default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+  end
+
+  create_table "insights_authors", force: :cascade do |t|
+    t.string   "status",     default: "active"
+    t.jsonb    "content"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  create_table "insights_categories", force: :cascade do |t|
+    t.string   "status",     default: "active"
+    t.jsonb    "content"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "slug"
+    t.jsonb    "seo"
+  end
+
+  create_table "insights_pages", force: :cascade do |t|
+    t.string   "slug"
+    t.string   "status"
+    t.string   "type"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "wide_image"
+    t.string   "square_image"
+  end
+
   create_table "pages", force: :cascade do |t|
     t.string   "title"
     t.string   "url"
     t.text     "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "performed_actions", force: :cascade do |t|
+    t.integer  "performer_id"
+    t.string   "subject_type"
+    t.integer  "subject_id"
+    t.string   "action"
+    t.string   "comment"
+    t.jsonb    "changed_attrs"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["performer_id"], name: "index_performed_actions_on_performer_id", using: :btree
+    t.index ["subject_type", "subject_id"], name: "index_performed_actions_on_subject_type_and_subject_id", using: :btree
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -124,6 +265,59 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable_type_and_searchable_id", using: :btree
+  end
+
+  create_table "post_pages", force: :cascade do |t|
+    t.integer  "skill_page_id"
+    t.string   "slug"
+    t.string   "target_vertical"
+    t.string   "status",          default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.index ["skill_page_id"], name: "index_post_pages_on_skill_page_id", using: :btree
+  end
+
+  create_table "press_center_article_pages", force: :cascade do |t|
+    t.string   "title"
+    t.string   "slug"
+    t.string   "status",       default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.string   "type"
+    t.datetime "published_at"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "press_center_generic_pages", force: :cascade do |t|
+    t.string   "status",     default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.string   "type"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  create_table "skill_jobs_pages", force: :cascade do |t|
+    t.integer  "skill_page_id"
+    t.string   "status",        default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "skill_pages", force: :cascade do |t|
+    t.string   "slug"
+    t.string   "sample_profiles_visibility"
+    t.string   "target_vertical"
+    t.string   "status",                     default: "draft"
+    t.jsonb    "content"
+    t.jsonb    "seo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "taggings", force: :cascade do |t|
@@ -151,6 +345,17 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
   end
 
+  create_table "talents", force: :cascade do |t|
+    t.integer  "platform_id"
+    t.string   "role_type"
+    t.jsonb    "profile"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",      default: "active"
+    t.index "lower((profile ->> 'full_name'::text)) text_pattern_ops", name: "talents_lower_idx", using: :btree
+    t.index ["platform_id"], name: "index_talents_on_platform_id", unique: true, using: :btree
+  end
+
   create_table "talks", force: :cascade do |t|
     t.string   "title"
     t.string   "slug"
@@ -168,6 +373,24 @@ ActiveRecord::Schema.define(version: 20170520084316) do
     t.index ["event_id"], name: "index_talks_on_event_id", using: :btree
     t.index ["slug"], name: "index_talks_on_slug", using: :btree
     t.index ["speaker_id"], name: "index_talks_on_speaker_id", using: :btree
+  end
+
+  create_table "testimonials", force: :cascade do |t|
+    t.integer  "platform_id"
+    t.string   "body"
+    t.string   "author_and_company"
+    t.string   "target_role"
+    t.string   "status",             default: "active"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+    t.index ["platform_id"], name: "index_testimonials_on_platform_id", unique: true, using: :btree
+  end
+
+  create_table "uploaded_files", force: :cascade do |t|
+    t.string   "file"
+    t.string   "owner"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

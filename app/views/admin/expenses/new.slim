@@ -1,0 +1,5 @@
+= simple_form_for [:admin, expense] do |f|
+  .fields
+    = f.association :event
+    = f.input :files, as: :image_preview
+    = f.button :submit

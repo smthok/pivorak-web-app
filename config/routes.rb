@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     namespace :admin do
       get '/', to: 'home#index'
 
+      resources :expenses
       resources :events,  except: %i[show destroy] do
         resources :visit_requests, only: %i[index] do
           collection do
