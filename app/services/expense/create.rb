@@ -3,10 +3,11 @@ class Expense
     def initialize(expense, params)
       @expense = expense
       @params = params
-      binding.pry
+
     end
 
     def call
+      expense.assign_attributes(params)
       return unless expense.valid?
 
       expense.save

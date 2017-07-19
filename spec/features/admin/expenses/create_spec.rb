@@ -16,5 +16,8 @@ RSpec.describe 'Create attachment' do
   end
 
   context 'when invalid params' do
+    it 'does not create an expense' do
+      expect { click_button 'Create Expense' }.to change(Expense, :count).by(0)
+    end
   end
 end
