@@ -13,7 +13,7 @@ class VisitRequest
 
         event.visit_requests.where(
           user: user,
-          status: :confirmed,
+          status: :approved,
           visited: true
         ).first_or_create
       end

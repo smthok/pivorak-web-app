@@ -5,7 +5,6 @@ module Admin
         ::VisitRequest::PENDING   => 'grey',
         ::VisitRequest::APPROVED  => 'success',
         ::VisitRequest::CANCELED  => 'red',
-        ::VisitRequest::CONFIRMED => 'violet',
         ::VisitRequest::REFUSED   => 'black'
     }
 

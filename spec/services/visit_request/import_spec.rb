@@ -19,7 +19,6 @@ describe VisitRequest::Import do
     it { expect(event.visitors).to_not include(user_c) }
 
     it { expect(event.visit_requests.first.user_id).to eq user_a.id }
-    it { expect(event.visit_requests.first.status).to eq VisitRequest::CONFIRMED.to_s }
     it { expect(event.visit_requests.first.visited).to eq true }
   end
 end

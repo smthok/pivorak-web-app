@@ -20,7 +20,7 @@ class Event < ApplicationRecord
   has_many :talks
   has_many :visit_requests
 
-  %i(approved pending final confirmed used).each do |scope_name|
+  %i(approved pending final used).each do |scope_name|
     has_many :"#{scope_name}_visit_requests", -> { send(scope_name) }, class_name: 'VisitRequest'
   end
 

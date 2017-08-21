@@ -14,7 +14,7 @@ class Event
     attr_reader :events, :page
 
     def associations_to_include
-      ::AssociationMapper.(visit_requests: %i(approved pending confirmed used), visitors: %i(verified newbie))
+      ::AssociationMapper.(visit_requests: %i(approved pending used), visitors: %i(verified newbie))
     end
   end
 end

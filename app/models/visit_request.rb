@@ -4,10 +4,9 @@ class VisitRequest < ApplicationRecord
   PENDING   = :pending
   APPROVED  = :approved
   CANCELED  = :canceled
-  CONFIRMED = :confirmed
   REFUSED   = :refused
 
-  enum status:  [PENDING, APPROVED, CANCELED, CONFIRMED, REFUSED]
+  enum status:  [PENDING, APPROVED, CANCELED, REFUSED]
 
   validates :event_id, :user_id, presence: true
 
@@ -18,7 +17,7 @@ class VisitRequest < ApplicationRecord
 
   scope :main_list,    -> { where(waiting_list: false) }
   scope :waiting_list, -> { where(waiting_list: true)  }
-  scope :final,        -> { where(status: [APPROVED, CONFIRMED]).main_list }
+  scope :final,        -> { where(status: [APPROVED]).main_list }
   scope :used,         -> { where(visited: true) }
 
   def main_list!
