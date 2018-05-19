@@ -67,5 +67,9 @@ module Admin
         method: :post, class: 'ui button red',
         data: { confirm: t('phrases.confirm') }
     end
+    
+    def admin_next_event_link
+      link_to t('events.next_event'), edit_admin_event_path(Event.last)
+    end
   end
 end
